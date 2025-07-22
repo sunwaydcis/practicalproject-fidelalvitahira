@@ -1,6 +1,7 @@
 package ch.makery.address
 
 import ch.makery.address.model.Person
+import ch.makery.address.util.Database
 import ch.makery.address.view.{PersonEditDialogController, PersonOverviewController}
 import javafx.fxml.FXMLLoader
 import scalafx.application.JFXApp3
@@ -14,7 +15,7 @@ import scalafx.scene.image.Image
 import scalafx.stage.{Modality, Stage}
 
 object MainApp extends JFXApp3:
-
+  Database.setupDB()
   //Window Root Pane
   var roots: Option[scalafx.scene.layout.BorderPane] = None
 
@@ -25,15 +26,7 @@ object MainApp extends JFXApp3:
   // The data as an observable list of Persons.
   val personData = new ObservableBuffer[Person]()
   // Constructor
-  personData += new Person("Hans", "Muster")
-  personData += new Person("Ruth", "Mueller")
-  personData += new Person("Heinz", "Kurz")
-  personData += new Person("Cornelia", "Meier")
-  personData += new Person("Werner", "Meyer")
-  personData += new Person("Lydia", "Kunz")
-  personData += new Person("Anna", "Best")
-  personData += new Person("Stefan", "Meier")
-  personData += new Person("Martin", "Mueller")
+  personData ++= Person.getAllPersons
 
   override def start(): Unit =
     // transform path of RootLayout.fxml to URI for resource location.
@@ -100,5 +93,18 @@ object MainApp extends JFXApp3:
     control.person = person
     dialog.showAndWait()
     control.okClicked
+
+  given Int = 8
+
+  def add2(a: Int)(implicit b: Int): Int = a + b
+  def add3(a: Int)(implicit b: Int): Int = a + b
+
+  def add4(a: Int)(implicit b: Int): Int = a + b
+  println(add2(3))
+  println(add2(3)(8))
+  println(add2(3)(8))
+  println(add2(3)(8))
+  println(add2(3)(8))
+
 
 
